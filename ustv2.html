@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Üst Bitme Olasılığı Hesaplama</title>
+    <style>
+      /* CSS Kodları */
+    </style>
+  </head>
+  <body>
+    <h1>Üst Bitme Olasılığı Hesaplama</h1>
+    <form id="form">
+      <label for="a-mac-sayisi">A Takımı Oynadığı Maç Sayısı:</label>
+      <input type="number" id="a-mac-sayisi" name="a-mac-sayisi"><br>
+
+      <label for="b-mac-sayisi">B Takımı Oynadığı Maç Sayısı:</label>
+      <input type="number" id="b-mac-sayisi" name="b-mac-sayisi"><br>
+
+      <label for="a-gol-sayisi">A Takımı Gol Sayısı:</label>
+      <input type="number" id="a-gol-sayisi" name="a-gol-sayisi"><br>
+
+      <label for="b-gol-sayisi">B Takımı Gol Sayısı:</label>
+      <input type="number" id="b-gol-sayisi" name="b-gol-sayisi"><br>
+
+      <label for="a-isabetli-sut-sayisi">A Takımı İsabetli Şut sayısı:</label>
+      <input type="number" id="a-isabetli-sut-sayisi" name="a-isabetli-sut-sayisi"><br>
+
+      <label for="b-isabetli-sut-sayisi">B Takımı İsabetli Şut sayısı:</label>
+      <input type="number" id="b-isabetli-sut-sayisi" name="b-isabetli-sut-sayisi"><br>
+
+      <label for="a-sut-isabeti-orani">A Takımı Şut İsabeti oranı:</label>
+      <input type="number" id="a-sut-isabeti-orani" name="a-sut-isabeti-orani"><br>
+
+      <label for="b-sut-isabeti-orani">B Takımı Şut İsabeti oranı:</label>
+      <input type="number" id="b-sut-isabeti-orani" name="b-sut-isabeti-orani"><br>
+
+      <label for="a-gole-cevirme-orani">A Takımı Gole Çevirme oranı:</label>
+      <input type="number" id="a-gole-cevirme-orani" name="a-gole-cevirme-orani"><br>
+
+      <label for="b-gole-cevirme-orani">B Takımı Gole Çevirme oranı:</label>
+      <input type="number" id="b-gole-cevirme-orani" name="b-gole-cevirme-orani"><br>
+        <label for="a-ic-saha-mac-sayisi">A Takımı İç sahada Oynadığı Maç Sayısı:</label>
+  <input type="number" id="a-ic-saha-mac-sayisi" name="a-ic-saha-mac-sayisi"><br>
+
+  <label for="b-dis-saha-mac-sayisi">B Takımı Dış sahada Oynadığı Maç Sayısı:</label>
+  <input type="number" id="b-dis-saha-mac-sayisi" name="b-dis-saha-mac-sayisi"><br>
+
+  <label for="a-ic-saha-gol-sayisi">A Takımı İç sahada attığı Gol Sayısı:</label>
+  <input type="number" id="a-ic-saha-gol-sayisi" name="a-ic-saha-gol-sayisi"><br>
+
+  <label for="b-dis-saha-gol-sayisi">B Takımı Dış sahada attığı Gol Sayısı:</label>
+  <input type="number" id="b-dis-saha-gol-sayisi" name="b-dis-saha-gol-sayisi"><br>
+
+  <label for="son-5-mac-gol-sayisi">A ve B takımlarının aralarında oynadığı son 5 maçta atılan gol sayısı:</label>
+  <input type="number" id="son-5-mac-gol-sayisi" name="son-5-mac-gol-sayisi"><br>
+
+  <button type="submit" id="hesapla">Hesapla</button>
+</form>
+
+<div id="sonuc"></div>
+
+<script>
+  // JavaScript Kodları
+  const form = document.getElementById('form');
+  const sonuc = document.getElementById('sonuc');
+
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    // Formdan girdileri al
+    const aMacSayisi = parseFloat(document.getElementById('a-mac-sayisi').value);
+    const bMacSayisi = parseFloat(document.getElementById('b-mac-sayisi').value);
+    const aGolSayisi = parseFloat(document.getElementById('a-gol-sayisi').value);
+    const bGolSayisi = parseFloat(document.getElementById('b-gol-sayisi').value);
+    const aIsabetliSutSayisi = parseFloat(document.getElementById('a-isabetli-sut-sayisi').value);
+    const bIsabetliSutSayisi = parseFloat(document.getElementById('b-isabetli-sut-sayisi').value);
+    const aSutIsabetiOrani = parseFloat(document.getElementById('a-sut-isabeti-orani').value);
+    const bSutIsabetiOrani = parseFloat(document.getElementById('b-sut-isabeti-orani').value);
+    const aGoleCevirmeOrani = parseFloat(document.getElementById('a-gole-cevirme-orani').value);
+    const bGoleCevirmeOrani = parseFloat(document.getElementById('b-gole-cevirme-orani').value);
+    const aIcSahaMacSayisi = parseFloat(document.getElementById('a-ic-saha-mac-sayisi').value);
+    const bDisSahaMacSayisi = parseFloat(document.getElementById('b-dis-saha-mac-sayisi').value);
+    const aIcSahaGolSayisi = parseFloat(document.getElementById('a-ic-saha-gol-sayisi').value);
+    const bDisSahaGolSayisi = parseFloat(document.getElementById('b-dis-saha-gol-sayisi').value);
+    const son5MacGolSayisi = parseFloat(document.getElementById('son-5-mac-gol-sayisi').value);
+        // Üst bitme olasılığı hesapla
+    const ustBitmeOlasiligi = ((aGolSayisi / aMacSayisi) * (bIsabetliSutSayisi / bMacSayisi) * aSutIsabetiOrani +
+                              (bGolSayisi / bMacSayisi) * (aIsabetliSutSayisi / aMacSayisi) * bSutIsabetiOrani) *
+                              ((aGoleCevirmeOrani + bGoleCevirmeOrani) / 2) *
+                              ((aIcSahaGolSayisi / aIcSahaMacSayisi + bDisSahaGolSayisi / bDisSahaMacSayisi) / 2) *
+                              ((son5MacGolSayisi * 2) / (aMacSayisi + bMacSayisi));
+
+    // Sonucu ekrana yazdır
+    sonuc.innerHTML = `Üst Bitme Olasılığı: ${ustBitmeOlasiligi.toFixed(2)}`;
+  });
+</script>
+</body>
+</html>
