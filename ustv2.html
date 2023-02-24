@@ -2,59 +2,43 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Maçın 2.5 Gol Üstü Bitme İhtimali Hesaplama</title>
+    <title>Futbol Maçı Üst Bitme İhtimali</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
   </head>
   <body>
-    <h1>Maçın 2.5 Gol Üstü Bitme İhtimali Hesaplama</h1>
-    <h2>A Takımı</h2>
+    <h1>Futbol Maçı Üst Bitme İhtimali</h1>
     <form>
-      <label for="oynadigiMacSayisiA">A Takımı Oynadığı Maç Sayısı:</label>
-      <input type="number" id="oynadigiMacSayisiA" name="oynadigiMacSayisiA"><br><br>
-      <label for="attigiGolSayisiA">A Takımı Attığı Gol Sayısı:</label>
-      <input type="number" id="attigiGolSayisiA" name="attigiGolSayisiA"><br><br>
-      <label for="isabetliSutSayisiA">A Takımı İsabetli Şut Sayısı:</label>
-      <input type="number" id="isabetliSutSayisiA" name="isabetliSutSayisiA"><br><br>
-      <label for="sutOraniA">A Takımı Şut İsabeti Oranı:</label>
-      <input type="number" id="sutOraniA" name="sutOraniA"><br><br>
-      <label for="golOraniA">A Takımı Gole Çevirme Oranı:</label>
-      <input type="number" id="golOraniA" name="golOraniA"><br><br>
-      <input type="button" value="Hesapla" onclick="hesaplaIhtimal('A')">
+      <label for="teamAPlayed">Takım A Oynadığı Maç Sayısı:</label>
+      <input type="number" id="teamAPlayed" name="teamAPlayed"><br><br>
+      <label for="teamBPlayed">Takım B Oynadığı Maç Sayısı:</label>
+      <input type="number" id="teamBPlayed" name="teamBPlayed"><br><br>
+      <label for="teamAGoals">Takım A Gol Sayısı:</label>
+      <input type="number" id="teamAGoals" name="teamAGoals"><br><br>
+      <label for="teamBGoals">Takım B Gol Sayısı:</label>
+      <input type="number" id="teamBGoals" name="teamBGoals"><br><br>
+      <label for="teamAShotsOnTarget">Takım A İsabetli Şut Sayısı:</label>
+      <input type="number" id="teamAShotsOnTarget" name="teamAShotsOnTarget"><br><br>
+      <label for="teamBShotsOnTarget">Takım B İsabetli Şut Sayısı:</label>
+      <input type="number" id="teamBShotsOnTarget" name="teamBShotsOnTarget"><br><br>
+      <label for="teamAShotsAccuracy">Takım A Şut İsabeti Oranı:</label>
+      <input type="number" step="0.01" id="teamAShotsAccuracy" name="teamAShotsAccuracy"><br><br>
+      <label for="teamBShotsAccuracy">Takım B Şut İsabeti Oranı:</label>
+      <input type="number" step="0.01" id="teamBShotsAccuracy" name="teamBShotsAccuracy"><br><br>
+      <label for="teamAGoalConversion">Takım A Gole Çevirme Oranı:</label>
+      <input type="number" step="0.01" id="teamAGoalConversion" name="teamAGoalConversion"><br><br>
+      <label for="teamBGoalConversion">Takım B Gole Çevirme Oranı:</label>
+      <input type="number" step="0.01" id="teamBGoalConversion" name="teamBGoalConversion"><br><br>
+      <label for="teamAHomePlayed">Takım A İç sahada Oynadığı Maç Sayısı:</label>
+      <input type="number" id="teamAHomePlayed" name="teamAHomePlayed"><br><br>
+      <label for="teamBAwayPlayed">Takım B Dış sahada Oynadığı Maç Sayısı:</label>
+      <input type="number" id="teamBAwayPlayed" name="teamBAwayPlayed"><
+      <label for="teamAGoalsHome">Takım A İç sahada attığı Gol Sayısı:</label>
+      <input type="number" id="teamAGoalsHome" name="teamAGoalsHome"><br><br>
+      <label for="teamBGoalsAway">Takım B Dış sahada attığı Gol Sayısı:</label>
+      <input type="number" id="teamBGoalsAway" name="teamBGoalsAway"><br><br>
+      <input type="button" value="Hesapla" onclick="calculateProbability()">
     </form>
-    <p id="ihtimalSonucA"></p>
-    
-    <h2>B Takımı</h2>
-    <form>
-      <label for="oynadigiMacSayisiB">B Takımı Oynadığı Maç Sayısı:</label>
-      <input type="number" id="oynadigiMacSayisiB" name="oynadigiMacSayisiB"><br><br>
-      <label for="attigiGolSayisiB">B Takımı Attığı Gol Sayısı:</label>
-      <input type="number" id="attigiGolSayisiB" name="attigiGolSayisiB"><br><br>
-      <label for="isabetliSutSayisiB">B Takımı İsabetli Şut Sayısı:</label>
-      <input type="number" id="isabetliSutSayisiB" name="isabetliSutSayisiB"><br><br>
-      <label for="sutOraniB">B Takımı Şut İsabeti Oranı:</label>
-      <input type="number" id="sutOraniB" name="sutOraniB"><br><br>
-      <label for="golOraniB">B Takımı Gole Çevirme Oranı:</label>
-      <input type="number" id="golOraniB" name="golOraniB"><br><br>
-      <input type="button" value="Hesapla" onclick="hesaplaIhtimal('B')">
-      </form>
-      <p id="ihtimalSonucB"></p>
-      <script>
-    function hesaplaIhtimal(takim) {
-    // Takımın istatistiklerini formdan çekme
-    var oynadigiMacSayisi = parseInt(document.getElementById('oynadigiMacSayisi' + takim).value);
-    var attigiGolSayisi = parseInt(document.getElementById('attigiGolSayisi' + takim).value);
-    var isabetliSutSayisi = parseInt(document.getElementById('isabetliSutSayisi' + takim).value);
-    var sutOrani = parseFloat(document.getElementById('sutOrani' + takim).value);
-    var golOrani = parseFloat(document.getElementById('golOrani' + takim).value);
-    
-    // 2.5 gol üstü bitme ihtimalini hesaplama
-    var ortalamaGolSayisi = attigiGolSayisi / oynadigiMacSayisi;
-    var isabetliSutYuzdesi = (isabetliSutSayisi / oynadigiMacSayisi) / sutOrani;
-    var goleCevirmeYuzdesi = golOrani;
-    var ihtimal = (0.5 + (1.5 * ortalamaGolSayisi * isabetliSutYuzdesi * goleCevirmeYuzdesi)) * 100;
-    
-    // Sonucu ekrana yazdırma
-    document.getElementById('ihtimalSonuc' + takim).innerHTML = '2.5 gol üstü bitme ihtimali: ' + ihtimal.toFixed(2) + '%';
-  }
-</script>
+    <div id="result"></div>
+    <script src="script.js"></script>
   </body>
 </html>
