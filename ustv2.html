@@ -1,97 +1,60 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Üst Bitme Olasılığı Hesaplama</title>
-    <style>
-      /* CSS Kodları */
-    </style>
+    <meta charset="UTF-8">
+    <title>Maçın 2.5 Gol Üstü Bitme İhtimali Hesaplama</title>
   </head>
   <body>
-    <h1>Üst Bitme Olasılığı Hesaplama</h1>
-    <form id="form">
-      <label for="a-mac-sayisi">A Takımı Oynadığı Maç Sayısı:</label>
-      <input type="number" id="a-mac-sayisi" name="a-mac-sayisi"><br>
-
-      <label for="b-mac-sayisi">B Takımı Oynadığı Maç Sayısı:</label>
-      <input type="number" id="b-mac-sayisi" name="b-mac-sayisi"><br>
-
-      <label for="a-gol-sayisi">A Takımı Gol Sayısı:</label>
-      <input type="number" id="a-gol-sayisi" name="a-gol-sayisi"><br>
-
-      <label for="b-gol-sayisi">B Takımı Gol Sayısı:</label>
-      <input type="number" id="b-gol-sayisi" name="b-gol-sayisi"><br>
-
-      <label for="a-isabetli-sut-sayisi">A Takımı İsabetli Şut sayısı:</label>
-      <input type="number" id="a-isabetli-sut-sayisi" name="a-isabetli-sut-sayisi"><br>
-
-      <label for="b-isabetli-sut-sayisi">B Takımı İsabetli Şut sayısı:</label>
-      <input type="number" id="b-isabetli-sut-sayisi" name="b-isabetli-sut-sayisi"><br>
-
-      <label for="a-sut-isabeti-orani">A Takımı Şut İsabeti oranı:</label>
-      <input type="number" id="a-sut-isabeti-orani" name="a-sut-isabeti-orani"><br>
-
-      <label for="b-sut-isabeti-orani">B Takımı Şut İsabeti oranı:</label>
-      <input type="number" id="b-sut-isabeti-orani" name="b-sut-isabeti-orani"><br>
-
-      <label for="a-gole-cevirme-orani">A Takımı Gole Çevirme oranı:</label>
-      <input type="number" id="a-gole-cevirme-orani" name="a-gole-cevirme-orani"><br>
-
-      <label for="b-gole-cevirme-orani">B Takımı Gole Çevirme oranı:</label>
-      <input type="number" id="b-gole-cevirme-orani" name="b-gole-cevirme-orani"><br>
-        <label for="a-ic-saha-mac-sayisi">A Takımı İç sahada Oynadığı Maç Sayısı:</label>
-  <input type="number" id="a-ic-saha-mac-sayisi" name="a-ic-saha-mac-sayisi"><br>
-
-  <label for="b-dis-saha-mac-sayisi">B Takımı Dış sahada Oynadığı Maç Sayısı:</label>
-  <input type="number" id="b-dis-saha-mac-sayisi" name="b-dis-saha-mac-sayisi"><br>
-
-  <label for="a-ic-saha-gol-sayisi">A Takımı İç sahada attığı Gol Sayısı:</label>
-  <input type="number" id="a-ic-saha-gol-sayisi" name="a-ic-saha-gol-sayisi"><br>
-
-  <label for="b-dis-saha-gol-sayisi">B Takımı Dış sahada attığı Gol Sayısı:</label>
-  <input type="number" id="b-dis-saha-gol-sayisi" name="b-dis-saha-gol-sayisi"><br>
-
-  <label for="son-5-mac-gol-sayisi">A ve B takımlarının aralarında oynadığı son 5 maçta atılan gol sayısı:</label>
-  <input type="number" id="son-5-mac-gol-sayisi" name="son-5-mac-gol-sayisi"><br>
-
-  <button type="submit" id="hesapla">Hesapla</button>
-</form>
-
-<div id="sonuc"></div>
-
-<script>
-  // JavaScript Kodları
-  const form = document.getElementById('form');
-  const sonuc = document.getElementById('sonuc');
-
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    // Formdan girdileri al
-    const aMacSayisi = parseFloat(document.getElementById('a-mac-sayisi').value);
-    const bMacSayisi = parseFloat(document.getElementById('b-mac-sayisi').value);
-    const aGolSayisi = parseFloat(document.getElementById('a-gol-sayisi').value);
-    const bGolSayisi = parseFloat(document.getElementById('b-gol-sayisi').value);
-    const aIsabetliSutSayisi = parseFloat(document.getElementById('a-isabetli-sut-sayisi').value);
-    const bIsabetliSutSayisi = parseFloat(document.getElementById('b-isabetli-sut-sayisi').value);
-    const aSutIsabetiOrani = parseFloat(document.getElementById('a-sut-isabeti-orani').value);
-    const bSutIsabetiOrani = parseFloat(document.getElementById('b-sut-isabeti-orani').value);
-    const aGoleCevirmeOrani = parseFloat(document.getElementById('a-gole-cevirme-orani').value);
-    const bGoleCevirmeOrani = parseFloat(document.getElementById('b-gole-cevirme-orani').value);
-    const aIcSahaMacSayisi = parseFloat(document.getElementById('a-ic-saha-mac-sayisi').value);
-    const bDisSahaMacSayisi = parseFloat(document.getElementById('b-dis-saha-mac-sayisi').value);
-    const aIcSahaGolSayisi = parseFloat(document.getElementById('a-ic-saha-gol-sayisi').value);
-    const bDisSahaGolSayisi = parseFloat(document.getElementById('b-dis-saha-gol-sayisi').value);
-    const son5MacGolSayisi = parseFloat(document.getElementById('son-5-mac-gol-sayisi').value);
-        // Üst bitme olasılığı hesapla
-    const ustBitmeOlasiligi = ((aGolSayisi / aMacSayisi) * (bIsabetliSutSayisi / bMacSayisi) * aSutIsabetiOrani +
-                              (bGolSayisi / bMacSayisi) * (aIsabetliSutSayisi / aMacSayisi) * bSutIsabetiOrani) *
-                              ((aGoleCevirmeOrani + bGoleCevirmeOrani) / 2) *
-                              ((aIcSahaGolSayisi / aIcSahaMacSayisi + bDisSahaGolSayisi / bDisSahaMacSayisi) / 2) *
-                              ((son5MacGolSayisi * 2) / (aMacSayisi + bMacSayisi));
-
-    // Sonucu ekrana yazdır
-    sonuc.innerHTML = `Üst Bitme Olasılığı: ${(ustBitmeOlasiligi * 100).toFixed(2)}%`;
-  });
+    <h1>Maçın 2.5 Gol Üstü Bitme İhtimali Hesaplama</h1>
+    <h2>A Takımı</h2>
+    <form>
+      <label for="oynadigiMacSayisiA">A Takımı Oynadığı Maç Sayısı:</label>
+      <input type="number" id="oynadigiMacSayisiA" name="oynadigiMacSayisiA"><br><br>
+      <label for="attigiGolSayisiA">A Takımı Attığı Gol Sayısı:</label>
+      <input type="number" id="attigiGolSayisiA" name="attigiGolSayisiA"><br><br>
+      <label for="isabetliSutSayisiA">A Takımı İsabetli Şut Sayısı:</label>
+      <input type="number" id="isabetliSutSayisiA" name="isabetliSutSayisiA"><br><br>
+      <label for="sutOraniA">A Takımı Şut İsabeti Oranı:</label>
+      <input type="number" id="sutOraniA" name="sutOraniA"><br><br>
+      <label for="golOraniA">A Takımı Gole Çevirme Oranı:</label>
+      <input type="number" id="golOraniA" name="golOraniA"><br><br>
+      <input type="button" value="Hesapla" onclick="hesaplaIhtimal('A')">
+    </form>
+    <p id="ihtimalSonucA"></p>
+    
+    <h2>B Takımı</h2>
+    <form>
+      <label for="oynadigiMacSayisiB">B Takımı Oynadığı Maç Sayısı:</label>
+      <input type="number" id="oynadigiMacSayisiB" name="oynadigiMacSayisiB"><br><br>
+      <label for="attigiGolSayisiB">B Takımı Attığı Gol Sayısı:</label>
+      <input type="number" id="attigiGolSayisiB" name="attigiGolSayisiB"><br><br>
+      <label for="isabetliSutSayisiB">B Takımı İsabetli Şut Sayısı:</label>
+      <input type="number" id="isabetliSutSayisiB" name="isabetliSutSayisiB"><br><br>
+      <label for="sutOraniB">B Takımı Şut İsabeti Oranı:</label>
+      <input type="number" id="sutOraniB" name="sutOraniB"><br><br>
+      <label for="golOraniB">B Takımı Gole Çevirme Oranı:</label>
+      <input type="number" id="golOraniB" name="golOraniB"><br><br>
+      <input type="button" value="Hesapla" onclick="hesaplaIhtimal('B')">
+      </form>
+      <p id="ihtimalSonucB"></p>
+      <script>
+    function hesaplaIhtimal(takim) {
+    // Takımın istatistiklerini formdan çekme
+    var oynadigiMacSayisi = parseInt(document.getElementById('oynadigiMacSayisi' + takim).value);
+    var attigiGolSayisi = parseInt(document.getElementById('attigiGolSayisi' + takim).value);
+    var isabetliSutSayisi = parseInt(document.getElementById('isabetliSutSayisi' + takim).value);
+    var sutOrani = parseFloat(document.getElementById('sutOrani' + takim).value);
+    var golOrani = parseFloat(document.getElementById('golOrani' + takim).value);
+    
+    // 2.5 gol üstü bitme ihtimalini hesaplama
+    var ortalamaGolSayisi = attigiGolSayisi / oynadigiMacSayisi;
+    var isabetliSutYuzdesi = (isabetliSutSayisi / oynadigiMacSayisi) / sutOrani;
+    var goleCevirmeYuzdesi = golOrani;
+    var ihtimal = (0.5 + (1.5 * ortalamaGolSayisi * isabetliSutYuzdesi * goleCevirmeYuzdesi)) * 100;
+    
+    // Sonucu ekrana yazdırma
+    document.getElementById('ihtimalSonuc' + takim).innerHTML = '2.5 gol üstü bitme ihtimali: ' + ihtimal.toFixed(2) + '%';
+  }
 </script>
-</body>
+  </body>
 </html>
