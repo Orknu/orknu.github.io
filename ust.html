@@ -1,92 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<script type="text/javascript" src="https://orkun.org/file.js"></script>
-
-	<title>Maçın Üst Bitme Olasılığı Hesaplayıcı</title>
+	<title>Üst Bitme Olasılığı Hesaplama</title>
 	<style>
-		body {
-			font-family: sans-serif;
-		}
-
 		label {
 			display: block;
 			margin-bottom: 5px;
 		}
-
 		input[type="number"] {
-			width: 100px;
 			padding: 5px;
+			border-radius: 3px;
+			border: 1px solid #ccc;
+			font-size: 16px;
 			margin-bottom: 10px;
+			width: 100%;
+			box-sizing: border-box;
 		}
-
-		button {
-			background-color: #008CBA;
-			color: #fff;
-			border: none;
+		input[type="submit"] {
 			padding: 10px;
 			border-radius: 5px;
+			background-color: #007bff;
+			color: #fff;
+			font-size: 16px;
+			border: none;
 			cursor: pointer;
 		}
-
+		input[type="submit"]:hover {
+			background-color: #0062cc;
+		}
 		.result {
-			margin-top: 20px;
-			padding: 10px;
-			background-color: #f2f2f2;
-			border: 1px solid #ddd;
-			border-radius: 5px;
+			font-size: 18px;
+			font-weight: bold;
+			margin-top: 10px;
 		}
 	</style>
 </head>
 <body>
-	<h1>Maçın Üst Bitme Olasılığı Hesaplayıcı</h1>
-	<form>
-		<label for="lambda">Takımların Gol Ortalamalarının Toplamı:</label>
-		<input type="number" id="lambda" required>
-		<label for="n">Maç Sayısı:</label>
-		<input type="number" id="n" required>
-		<button type="button" onclick="calculateOverProbability()">Hesapla</button>
+	<h1>Üst Bitme Olasılığı Hesaplama</h1>
+	<form onsubmit="return calculate()">
+		<label for="a-goals">A Takımı Gol Sayısı:</label>
+		<input type="number" id="a-goals" name="a-goals" required>
+		<label for="a-matches">A Takımı Oynadığı Maç Sayısı:</label>
+		<input type="number" id="a-matches" name="a-matches" required>
+		<label for="b-goals">B Takımı Gol Sayısı:</label>
+		<input type="number" id="b-goals" name="b-goals" required>
+		<label for="b-matches">B Takımı Oynadığı Maç Sayısı:</label>
+		<input type="number" id="b-matches" name="b-matches" required>
+		<input type="submit" value="Hesapla">
 	</form>
-	<div class="result">
-		<p><strong>Maçın Üst Bitme Olasılığı:</strong> <span id="result"></span></p>
-	</div>
-<form onsubmit="calculate()">
-  <label for="a-goals">A Takımı Gol Sayısı:</label>
-  <input type="number" id="a-goals" name="a-goals" required>
-  <br>
-  <label for="b-goals">B Takımı Gol Sayısı:</label>
-  <input type="number" id="b-goals" name="b-goals" required>
-  <br>
-  <label for="a-matches">A Takımı Oynadığı Maç Sayısı:</label>
-  <input type="number" id="a-matches" name="a-matches" required>
-  <br>
-  <label for="b-matches">B Takımı Oynadığı Maç Sayısı:</label>
-  <input type="number" id="b-matches" name="b-matches" required>
-  <br>
-  <input type="submit" value="Hesapla">
-</form>
-
-<div id="result"></div>
-
+	<div class="result" id="result"></div>
 	<script>
-		function calculateOverProbability() {
-			var lambda = document.getElementById("lambda").value;
-			var n = document.getElementById("n").value;
-			var sum = 0;
-			for (var i = 0; i <= n; i++) {
-				sum += Math.pow(lambda, i) / factorial(i);
-			}
-			var overProbability = 1 - Math.exp(-lambda) * sum;
-			document.getElementById("result").innerHTML = overProbability.toFixed(2);
+		function calculate() {
+		  const aGoals = parseInt(document.getElementById("a-goals").value);
+		  const bGoals = parseInt(document.getElementById("b-goals").value);
+		  const aMatches = parseInt(document.getElementById("a-matches").value);
+		  const bMatches = parseInt(document.getElementById("b-matches").value);
+		  const overProb = calculateOverProb(aGoals, bGoals, aMatches, bMatches);
+		  document.getElementById("result").innerHTML = "Üst Bitme Olasılığı: " + overProb.toFixed(2);
+		  return false; // sayfa yenilenmesini engellemek için false döndürür
 		}
 
-		function factorial(num) {
-		  if (num === 0) {
-		    return 1;
-		  } else {
-		    return num * factorial(num - 1);
-		  }
+		function calculateOverProb(aGoals, bGoals, aMatches, bMatches) {
+		  const totalMatches = aMatches + bMatches;
+		  const avgAGoals = aGoals / aMatches;
+		  const avgBGoals = bGoals / bMatches;
+		  const avgTotalGoals = (aGoals + bGoals) / totalMatches;
+		  const overProb = 1 - poisson(avgTotalGoals, 0) - poisson(avgTotalGoals, 1);
+		  return overProb;
 		}
-	</script>
+
+		function poisson(lambda, k) {
+		  const expLambda = Math.exp(-lambda);
+		  let p = Math.pow(lambda, k) * expLambda
+	  for (let i = 1; i <= k; i++) {
+	    p /= i;
+	    p *= lambda;
+	  }
+	  return p * expLambda;
+	}
+</script>
 </body>
 </html>
