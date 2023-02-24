@@ -1,83 +1,184 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="utf-8">
-    <title>Maçın Üst Bitme Olasılığı Hesaplayıcı</title>
+	<title>Maçın Üst Bitme Olasılığı Hesaplama</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+		}
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f9f9f9;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0,0,0,0.2);
+		}
+		h1 {
+			text-align: center;
+		}
+		form {
+			display: flex;
+			flex-direction: column;
+		}
+		label {
+			margin: 10px 0;
+		}
+		input[type="number"] {
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0,0,0,0.2);
+		}
+		input[type="submit"] {
+			margin-top: 20px;
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			background-color: #4CAF50;
+			color: white;
+			cursor: pointer;
+			transition: background-color 0.2s ease;
+		}
+		input[type="submit"]:hover {
+			background-color: #3e8e41;
+		}
+		.result {
+			margin-top: 20px;
+			padding: 10px;
+			border-radius: 5px;
+			border: none;
+			box-shadow: 0 0 5px rgba(0,0,0,0.2);
+			text-align: center;
+		}
+	</style>
 </head>
-
 <body>
-    <h1>Maçın Üst Bitme Olasılığı Hesaplayıcı</h1>
-
-    <form>
-        <label>A Takımı Oynadığı Toplam Maç Sayısı:</label>
-        <input type="number" id="teamA_total_matches"><br>
-
-        <label>B Takımı Oynadığı Toplam Maç Sayısı:</label>
-        <input type="number" id="teamB_total_matches"><br>
-
-        <label>A Takımı Toplam Gol Sayısı:</label>
-        <input type="number" id="teamA_total_goals"><br>
-
-        <label>B Takımı Toplam Gol Sayısı:</label>
-        <input type="number" id="teamB_total_goals"><br>
-
-        <label>A Takımı Toplam İsabetli Şut Sayısı:</label>
-        <input type="number" id="teamA_total_shots_on_target"><br>
-
-        <label>B Takımı Toplam İsabetli Şut Sayısı:</label>
-        <input type="number" id="teamB_total_shots_on_target"><br>
-
-        <label>A Takımı Toplam Şut İsabeti Oranı (Yüzde):</label>
-        <input type="number" id="teamA_shots_accuracy"><br>
-
-        <label>B Takımı Toplam Şut İsabeti Oranı (Yüzde):</label>
-        <input type="number" id="teamB_shots_accuracy"><br>
-
-        <label>A Takımı Toplam Gole Çevirme Oranı(Yüzde):</label>
-        <input type="number" id="teamA_conversion_rate"><br>
-
-        <label>B Takımı Toplam Gole Çevirme Oranı(Yüzde):</label>
-        <input type="number" id="teamB_conversion_rate"><br>
-
-        <button type="button" id="calculate_button">Hesapla</button>
-    </form>
-
-    <p>Maçın Üst Bitme Olasılığı: <span id="result_value"></span></p>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<div class="container">
+		<h1>Maçın Üst Bitme Olasılığı Hesaplama</h1>
+		<form onsubmit="calculateProbability(event)">
+			<label>A Takımı Oynadığı toplam Maç Sayısı:
+				<input type="number" id="teamAMatchPlayed" required>
+			</label>
+			<label>B Takımı Oynadığı toplam Maç Sayısı:
+				<input type="number" id="teamBMatchPlayed" required>
+			</label>
+			<label>A Takımı toplam Gol Sayısı:
+				<input type="number" id="teamAGoalScored" required>
+			</label>
+			<label>B Takımı toplam Gol Sayısı:
+				<input type="number" id="teamBGoalScored" required>
+			</label>
+			<label>A Takımı toplam İsabetli Şut sayısı:
+				<input type="number" id="teamAShotsOnTarget" required>
+</label>
+<label>B Takımı toplam İsabetli Şut sayısı:
+<input type="number" id="teamBShotsOnTarget" required>
+</label>
+<label>A Takımı toplam Şut İsabeti oranı (Yüzde):
+<input type="number" id="teamAShotAccuracy" required>
+</label>
+<label>B Takımı toplam Şut İsabeti oranı (Yüzde):
+<input type="number" id="teamBShotAccuracy" required>
+</label>
+<label>A Takımı toplam Gole Çevirme oranı (Yüzde):
+<input type="number" id="teamAConversionRate" required>
+</label>
+<label>B Takımı toplam Gole Çevirme oranı (Yüzde):
+<input type="number" id="teamBConversionRate" required>
+</label>
+<input type="submit" value="Hesapla">
+</form>
+<div class="result" id="result"></div>
+</div>
     <script>
-        $(document).ready(function() {
+	function calculateProbability(event) {
+		event.preventDefault();
 
-            $("#calculate_button").click(function() {
+		// Get input values
+		const teamAMatchPlayed = document.getElementById("teamAMatchPlayed").value;
+		const teamBMatchPlayed = document.getElementById("teamBMatchPlayed").value;
+		const teamAGoalScored = document.getElementById("teamAGoalScored").value;
+		const teamBGoalScored = document.getElementById("teamBGoalScored").value;
+		const teamAShotsOnTarget = document.getElementById("teamAShotsOnTarget").value;
+		const teamBShotsOnTarget = document.getElementById("teamBShotsOnTarget").value;
+		const teamAShotAccuracy = document.getElementById("teamAShotAccuracy").value;
+		const teamBShotAccuracy = document.getElementById("teamBShotAccuracy").value;
+		const teamAConversionRate = document.getElementById("teamAConversionRate").value;
+		const teamBConversionRate = document.getElementById("teamBConversionRate").value;
 
-                // Form elemanlarından değerleri al
-                var teamA_total_matches = parseFloat($("#teamA_total_matches").val());
-                var teamB_total_matches = parseFloat($("#teamB_total_matches").val());
-                var teamA_total_goals = parseFloat($("#teamA_total_goals").val());
-                var teamB_total_goals = parseFloat($("#teamB_total_goals").val());
-                var teamA_total_shots_on_target = parseFloat($("#teamA_total_shots_on_target").val());
-                var teamB_total_shots_on_target = parseFloat($("#teamB_total_shots_on_target").val());
-                var teamA_shots_accuracy = parseFloat($("#teamA_shots_accuracy").val()) / 100;
-                var teamB_shots_accuracy = parseFloat($("#teamB_shots_accuracy").val()) / 100;
-                var teamA_conversion_rate = parseFloat($("#teamA_conversion_rate").val()) /100;
-                var teamB_conversion_rate = parseFloat($("#teamB_conversion_rate").val()) / 100;
-                            // Maçın Üst Bitme Olasılığı hesapla
-            var total_matches = teamA_total_matches + teamB_total_matches;
-            var average_goals_per_match = (teamA_total_goals + teamB_total_goals) / total_matches;
-            var average_shots_on_target_per_match = (teamA_total_shots_on_target + teamB_total_shots_on_target) / total_matches;
-            var average_shots_accuracy = (teamA_shots_accuracy + teamB_shots_accuracy) / 2;
-            var average_conversion_rate = (teamA_conversion_rate + teamB_conversion_rate) / 2;
+		// Calculate average goals scored and conceded
+		const teamAAverageGoalsScored = teamAGoalScored / teamAMatchPlayed;
+		const teamBAverageGoalsScored = teamBGoalScored / teamBMatchPlayed;
+		const teamAAverageGoalsConceded = teamBAverageGoalsScored;
+		const teamBAverageGoalsConceded = teamAAverageGoalsScored;
 
-            var expected_goals = average_shots_on_target_per_match * average_conversion_rate;
-            var expected_total_goals = expected_goals * total_matches;
-            var expected_over_goals = expected_goals * (total_matches / 2 + 0.5);
-            var probability_of_over = (1 - Math.pow(Math.E, -expected_over_goals)) * 100;
+		// Calculate average shots on target and shot accuracy
+		const teamAAverageShotsOnTarget = teamAShotsOnTarget / teamAMatchPlayed;
+		const teamBAverageShotsOnTarget = teamBShotsOnTarget / teamBMatchPlayed;
+		const teamAAverageShotAccuracy = teamAShotAccuracy / 100;
+		const teamBAverageShotAccuracy = teamBShotAccuracy / 100;
 
-            // Sonucu ekranda göster
-            $("#result_value").text(probability_of_over.toFixed(2) + " %");
-        });
-    });
+		// Calculate goal scoring probability for each team
+		const teamAGoalScoringProbability = teamAAverageShotsOnTarget * teamAAverageShotAccuracy * teamAConversionRate;
+		const teamBGoalScoringProbability = teamBAverageShotsOnTarget * teamBAverageShotAccuracy * teamBConversionRate;
+
+		// Set number of simulations and initialize counters
+		const numberOfSimulations = 10000;
+		let numberOfOver = 0;
+		let numberOfUnder = 0;
+
+		// Simulate matches and count number of overs and unders
+		for (let i = 0; i < numberOfSimulations; i++) {
+// Simulate goals scored for each team
+const teamAGoalsScored = simulateGoalsScored(teamAGoalScoringProbability, teamBAverageGoalsConceded);
+const teamBGoalsScored = simulateGoalsScored(teamBGoalScoringProbability, teamAAverageGoalsConceded);
+            			// Calculate total goals scored in the match
+			const totalGoalsScored = teamAGoalsScored + teamBGoalsScored;
+
+			// Check if total goals scored is over or under 2.5
+			if (totalGoalsScored > 2.5) {
+				numberOfOver++;
+			} else {
+				numberOfUnder++;
+			}
+		}
+
+		// Calculate probability of over and under
+		const probabilityOfOver = numberOfOver / numberOfSimulations;
+		const probabilityOfUnder = numberOfUnder / numberOfSimulations;
+
+		// Display result
+		const resultElement = document.getElementById("result");
+		resultElement.innerHTML = `Maçın Üst bitme olasılığı: ${probabilityOfOver.toFixed(2)} <br> Maçın Alt bitme olasılığı: ${probabilityOfUnder.toFixed(2)}`;
+	}
+
+	function simulateGoalsScored(goalScoringProbability, averageGoalsConceded) {
+		// Calculate Poisson parameter
+		const lambda = goalScoringProbability * averageGoalsConceded;
+
+		// Initialize goals scored to 0
+		let goalsScored = 0;
+
+		// Simulate goals scored using Poisson distribution
+		let poissonRandom = Math.exp(-lambda);
+		let cumulativeProbability = poissonRandom;
+		const randomNumber = Math.random();
+
+		while (randomNumber > cumulativeProbability) {
+			goalsScored++;
+			poissonRandom *= lambda / goalsScored;
+			cumulativeProbability += poissonRandom;
+		}
+
+		return goalsScored;
+	}
+
+	const form = document.getElementById("form");
+	form.addEventListener("submit", calculateProbability);
 </script>
 </body>
 </html>
+
