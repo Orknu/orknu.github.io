@@ -2,81 +2,127 @@
 <html>
 <head>
 	<title>Üst Bitme Olasılığı Hesaplama</title>
-	<style>
-		label {
-			display: block;
-			margin-bottom: 5px;
+	<style type="text/css">
+		body {
+			background-color: #f2f2f2;
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
 		}
-		input[type="number"] {
-			padding: 5px;
-			border-radius: 3px;
-			border: 1px solid #ccc;
-			font-size: 16px;
-			margin-bottom: 10px;
-			width: 100%;
-			box-sizing: border-box;
+		.container {
+			max-width: 800px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #fff;
+			box-shadow: 0px 0px 5px rgba(0,0,0,0.2);
+			border-radius: 5px;
 		}
-		input[type="submit"] {
+		h1 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+		form {
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: space-between;
+		}
+		input {
 			padding: 10px;
+			margin-bottom: 10px;
+			border: none;
+			border-radius: 5px;
+			background-color: #f2f2f2;
+			font-size: 16px;
+		}
+		button {
+			padding: 10px;
+			border: none;
 			border-radius: 5px;
 			background-color: #007bff;
 			color: #fff;
 			font-size: 16px;
-			border: none;
 			cursor: pointer;
 		}
-		input[type="submit"]:hover {
-			background-color: #0062cc;
+		button:hover {
+			background-color: #0069d9;
 		}
 		.result {
-			font-size: 18px;
-			font-weight: bold;
-			margin-top: 10px;
+			margin-top: 20px;
+			padding: 20px;
+			background-color: #d4edda;
+			color: #155724;
+			border-radius: 5px;
 		}
 	</style>
 </head>
 <body>
-	<h1>Üst Bitme Olasılığı Hesaplama</h1>
-	<form onsubmit="return calculate()">
-		<label for="a-goals">A Takımı Gol Sayısı:</label>
-		<input type="number" id="a-goals" name="a-goals" required>
-		<label for="a-matches">A Takımı Oynadığı Maç Sayısı:</label>
-		<input type="number" id="a-matches" name="a-matches" required>
-		<label for="b-goals">B Takımı Gol Sayısı:</label>
-		<input type="number" id="b-goals" name="b-goals" required>
-		<label for="b-matches">B Takımı Oynadığı Maç Sayısı:</label>
-		<input type="number" id="b-matches" name="b-matches" required>
-		<input type="submit" value="Hesapla">
+	<div class="container">
+		<h1>Üst Bitme Olasılığı Hesaplama</h1>
+		<form id="form">
+			<label>A Takımı Gol Sayısı:</label>
+			<input type="number" id="teamAGoals">
+			<label>A Takımı Oynadığı Maç Sayısı:</label>
+			<input type="number" id="teamAGames">
+			<label>B Takımı Gol Sayısı:</label>
+			<input type="number" id="teamBGoals">
+			<label>B Takımı Oynadığı Maç Sayısı:</label>
+			<input type="number" id="teamBGames">
+			<label>A Takımı İsabetli Şut sayısı:</label>
+			<input type="number" id="teamAShotsOnTarget">
+			<label>B Takımı İsabetli Şut sayısı:</label>
+			<input type="number" id="teamBShotsOnTarget">
+			<label>A Takımı Şut İsabeti oranı:</label>
+			<input type="number" id="teamAShotAccuracy">
+			<label>B Takımı Şut İsabeti oranı:</label>
+			<input type="number" id="teamBShotAccuracy">
+			<label>A Takımı Gole Çevirme oranı:</label>
+			<input type="number" id="teamAGoalConversion">
+		<label>B Takımı Gole Çevirme oranı:</label>
+		<input type="number" id="teamBGoalConversion">
+		<button type="button" onclick="calculate()">Hesapla</button>
 	</form>
 	<div class="result" id="result"></div>
-	<script>
-		function calculate() {
-		  const aGoals = parseInt(document.getElementById("a-goals").value);
-		  const bGoals = parseInt(document.getElementById("b-goals").value);
-		  const aMatches = parseInt(document.getElementById("a-matches").value);
-		  const bMatches = parseInt(document.getElementById("b-matches").value);
-		  const overProb = calculateOverProb(aGoals, bGoals, aMatches, bMatches);
-		  document.getElementById("result").innerHTML = "Üst Bitme Olasılığı: " + overProb.toFixed(2);
-		  return false; // sayfa yenilenmesini engellemek için false döndürür
-		}
+</div>
+<script type="text/javascript">
+	function calculate() {
+		// Get form inputs
+		var teamAGoals = parseInt(document.getElementById("teamAGoals").value);
+		var teamAGames = parseInt(document.getElementById("teamAGames").value);
+		var teamBGoals = parseInt(document.getElementById("teamBGoals").value);
+		var teamBGames = parseInt(document.getElementById("teamBGames").value);
+		var teamAShotsOnTarget = parseInt(document.getElementById("teamAShotsOnTarget").value);
+		var teamBShotsOnTarget = parseInt(document.getElementById("teamBShotsOnTarget").value);
+		var teamAShotAccuracy = parseFloat(document.getElementById("teamAShotAccuracy").value);
+		var teamBShotAccuracy = parseFloat(document.getElementById("teamBShotAccuracy").value);
+		var teamAGoalConversion = parseFloat(document.getElementById("teamAGoalConversion").value);
+		var teamBGoalConversion = parseFloat(document.getElementById("teamBGoalConversion").value);
 
-		function calculateOverProb(aGoals, bGoals, aMatches, bMatches) {
-		  const totalMatches = aMatches + bMatches;
-		  const avgAGoals = aGoals / aMatches;
-		  const avgBGoals = bGoals / bMatches;
-		  const avgTotalGoals = (aGoals + bGoals) / totalMatches;
-		  const overProb = 1 - poisson(avgTotalGoals, 0) - poisson(avgTotalGoals, 1);
-		  return overProb;
-		}
+		// Calculate expected goals for each team
+		var teamAExpectedGoals = (teamAShotsOnTarget / teamAGames) * teamAShotAccuracy * teamAGoalConversion;
+		var teamBExpectedGoals = (teamBShotsOnTarget / teamBGames) * teamBShotAccuracy * teamBGoalConversion;
 
-		function poisson(lambda, k) {
-		  const expLambda = Math.exp(-lambda);
-		  let p = Math.pow(lambda, k) * expLambda
-	  for (let i = 1; i <= k; i++) {
-	    p /= i;
-	    p *= lambda;
-	  }
-	  return p * expLambda;
+		// Calculate total expected goals
+		var totalExpectedGoals = teamAExpectedGoals + teamBExpectedGoals;
+
+		// Calculate probability of over 2.5 goals
+		var over25Probability = 1 - poissonProbability(2, totalExpectedGoals) - poissonProbability(1, totalExpectedGoals);
+
+		// Format result as percentage
+		var percentage = (over25Probability * 100).toFixed(2);
+
+		// Display result
+		document.getElementById("result").innerHTML = "Üst Bitme Olasılığı: " + percentage + "%";
+	}
+
+	// Poisson probability function
+	function poissonProbability(k, lambda) {
+		var p = Math.exp(-lambda);
+		var factorial = 1;
+		for (var i = 1; i <= k; i++) {
+			factorial *= i;
+			p *= lambda / i;
+		}
+		return p / factorial;
 	}
 </script>
 </body>
