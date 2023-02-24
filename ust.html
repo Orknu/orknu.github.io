@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maçın Üst Bitme Olasılığı Hesaplayıcı</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        body {
+            padding: 50px;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .result {
+            margin-top: 30px;
+            font-weight: bold;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="container">
+
+        <h1 class="mb-5">Maçın Üst Bitme Olasılığı Hesaplayıcı</h1>
+
+        <form id="form">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="teamA_total_matches">A Takımı Oynadığı Toplam Maç Sayısı:</label>
+                    <input type="number" class="form-control" id="teamA_total_matches" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="teamB_total_matches">B Takımı Oynadığı Toplam Maç Sayısı:</label>
+                    <input type="number" class="form-control" id="teamB_total_matches" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="teamA_total_goals">A Takımı Toplam Gol Sayısı:</label>
+                    <input type="number" class="form-control" id="teamA_total_goals" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="teamB_total_goals">B Takımı Toplam Gol Sayısı:</label>
+                    <input type="number" class="form-control" id="teamB_total_goals" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="teamA_total_shots">A Takımı Toplam İsabetli Şut Sayısı:</label>
+                    <input type="number" class="form-control" id="teamA_total_shots" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="teamB_total_shots">B Takımı Toplam İsabetli Şut Sayısı:</label>
+                    <input type="number" class="form-control" id="teamB_total_shots" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="teamA_shots_accuracy">A Takımı Toplam Şut İsabeti Oranı (%):</label>
+                    <input type="number" class="form-control" id="teamA_shots_accuracy" required>
+                </div>
+                <div class="form-group col-md-6">
+                   
+                <label for="teamB_shots_accuracy">B Takımı Toplam Şut İsabeti Oranı (%):</label>
+                <input type="number" class="form-control" id="teamB_shots_accuracy" required>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="teamA_conversion_rate">A Takımı Toplam Gole Çevirme Oranı (%):</label>
+                <input type="number" class="form-control" id="teamA_conversion_rate" required>
+            </div>
+            <div class="form-group col-md-6">
+                <label for="teamB_conversion_rate">B Takımı Toplam Gole Çevirme Oranı (%):</label>
+                <input type="number" class="form-control" id="teamB_conversion_rate" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="teamA_home_matches">A Takımı İç Sahada Oynadığı Maç Sayısı:</label>
+            <input type="number" class="form-control" id="teamA_home_matches" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Hesapla</button>
+
+    </form>
+
+    <div class="result mt-5">
+        <h3>Maçın Üst Bitme Olasılığı: <span id="result_value"></span></h3>
+    </div>
+
+</div>
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+
+        $("#form").submit(function(event) {
+            event.preventDefault();
+
+            // Değerleri al
+            var teamA_total_matches = parseInt($("#teamA_total_matches").val());
+            var teamB_total_matches = parseInt($("#teamB_total_matches").val());
+            var teamA_total_goals = parseInt($("#teamA_total_goals").val());
+            var teamB_total_goals = parseInt($("#teamB_total_goals").val());
+            var teamA_total_shots = parseInt($("#teamA_total_shots").val());
+            var teamB_total_shots = parseInt($("#teamB_total_shots").val());
+            var teamA_shots_accuracy = parseFloat($("#teamA_shots_accuracy").val()) / 100.0;
+            var teamB_shots_accuracy = parseFloat($("#teamB_shots_accuracy").val()) / 100.0;
+            var teamA_conversion_rate = parseFloat($("#teamA_conversion_rate").val()) / 100.0;
+            var teamB_conversion_rate = parseFloat($("#teamB_conversion_rate").val()) / 100.0;
+            var teamA_home_matches = parseInt($("#teamA_home_matches").val());
+
+            // Hesaplama
+            var total_matches = teamA_total_matches + teamB_total_matches;
+            var total_goals = teamA_total_goals + teamB_total_goals;
+            var total_shots = teamA_total_shots + teamB_total_shots;
+            var shots_accuracy = (teamA_total_shots * teamA_shots_accuracy + teamB_total_shots * teamB_shots_accuracy) / total_shots;
+            var conversion_rate = (teamA_total_goals * teamA_conversion_rate + teamB_total_goals * teamB_conversion_rate) / total_goals;
+            var home_matches_ratio = teamA_home_matches / total_matches;
+            var away_matches_ratio = 1 - home_matches_ratio;
+                      var expected_home_goals = home_matches_ratio * shots_accuracy * conversion_rate;
+            var expected_away_goals = away_matches_ratio * shots_accuracy * conversion_rate;
+
+            var expected_total_goals = expected_home_goals + expected_away_goals;
+
+            var over_probability = 1 - Math.exp(-expected_total_goals);
+
+            // Sonucu göster
+            $("#result_value").text(over_probability.toFixed(2));
+
+        });
+
+    });
+</script>
+</body>
+</html>
