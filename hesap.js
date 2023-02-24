@@ -37,3 +37,13 @@ const aMatches = 8;
 const bMatches = 6;
 const overProb = calculateOverProb(aGoals, bGoals, aMatches, bMatches);
 console.log(overProb); // Örnek veriler için sonucu konsolda yazdırır
+
+function calculate() {
+  const aGoals = parseInt(document.getElementById("a-goals").value);
+  const bGoals = parseInt(document.getElementById("b-goals").value);
+  const aMatches = parseInt(document.getElementById("a-matches").value);
+  const bMatches = parseInt(document.getElementById("b-matches").value);
+  const overProb = calculateOverProb(aGoals, bGoals, aMatches, bMatches);
+  document.getElementById("result").innerHTML = "Üst Bitme Olasılığı: " + overProb.toFixed(2);
+  return false; // sayfa yenilenmesini engellemek için false döndürür
+}
