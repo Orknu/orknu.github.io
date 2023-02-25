@@ -1,130 +1,155 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title>Maçın Üst Bitme Olasılığı Hesaplama</title>
-		<style>
-			form {
-				margin: 20px;
-				padding: 20px;
-				border: 1px solid #ccc;
-				border-radius: 5px;
-			}
+  <head>
+    <meta charset="UTF-8">
+    <title>Maçın Üst Bitme İhtimali Hesaplayıcısı</title>
+    <style>
+      body {
+        background-color: #f2f2f2;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+      }
 
-			fieldset {
-				border: none;
-				margin: 0;
-				padding: 0;
-			}
+      .container {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: 50px auto;
+        max-width: 800px;
+        padding: 20px;
+      }
 
-			legend {
-				font-size: 1.2rem;
-				font-weight: bold;
-				margin-bottom: 10px;
-			}
+      h1 {
+        color: #333;
+        text-align: center;
+      }
 
-			label {
-				display: block;
-				margin-bottom: 10px;
-			}
+      fieldset {
+        border: none;
+        margin: 10px 0;
+        padding: 0;
+      }
 
-			input[type="number"] {
-				width: 100%;
-				padding: 5px;
-				border: 1px solid #ccc;
-				border-radius: 5px;
-				font-size: 1rem;
-				line-height: 1.5;
-			}
+      legend {
+        color: #333;
+        font-weight: bold;
+      }
 
-			button[type="submit"] {
-				background-color: #4CAF50;
-				color: white;
-				padding: 10px 20px;
-				border: none;
-				border-radius: 5px;
-				font-size
-		}
+      label {
+        display: block;
+        margin-bottom: 5px;
+      }
 
-		#over-probability {
-			font-size: 2rem;
-			font-weight: bold;
-			margin-top: 20px;
-		}
-	</style>
-</head>
-<body>
-	<form id="input-form">
-		<fieldset>
-			<legend>Maçın Üst Bitme Olasılığı Hesaplama</legend>
-			<label for="total-matches-a">A Takımı Bu Sezon Oynadığı Toplam Maç Sayısı:</label>
-			<input type="number" id="total-matches-a" name="total-matches-a" required>
+      input[type="number"] {
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        font-size: 16px;
+        margin-bottom: 10px;
+        padding: 5px;
+        width: 100%;
+      }
 
-			<label for="total-goals-a">A Takımı Bu Sezon Attığı Toplam Gol Sayısı:</label>
-			<input type="number" id="total-goals-a" name="total-goals-a" required>
+      button[type="submit"] {
+        background-color: #333;
+        border: none;
+        border-radius: 3px;
+        color: #fff;
+        cursor: pointer;
+        font-size: 16px;
+        margin-top: 10px;
+        padding: 10px;
+      }
 
-			<label for="total-shots-on-target-a">A Takımı Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
-			<input type="number" id="total-shots-on-target-a" name="total-shots-on-target-a" required>
+      #result {
+        color: #333;
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 20px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Maçın Üst Bitme İhtimali Hesaplayıcısı</h1>
+      <form id="matchForm">
+        <fieldset>
+          <legend>Takım A</legend>
+          <div>
+            <label for="aMatches">Maç Sayısı:</label>
+            <input type="number" id="aMatches" name="aMatches">
+          </div>
+          <div>
+            <label for="aGoals">Gol Sayısı:</label>
+            <input type="number" id="aGoals" name="aGoals">
+          </div>
+          <div>
+            <label for="aShots">İsabetli Şut Sayısı:</label>
+            <input type="number" id="aShots" name="aShots">
+          </div>
+          <div>
+            <label for="aShotAccuracy">Şut İsabeti:</label>
+            <input type="number" id="aShotAccuracy" name="aShotAccuracy">
+          </div>
+          <div>
+            <label for="aConversionRate">Gole Çevirme Oranı:</label>
+            <input type="number" id="aConversionRate" name="aConversionRate">
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Takım B</legend>
+<div>
+<label for="bMatches">Maç Sayısı:</label>
+<input type="number" id="bMatches" name="bMatches">
+</div>
+<div>
+<label for="bGoals">Gol Sayısı:</label>
+<input type="number" id="bGoals" name="bGoals">
+</div>
+<div>
+<label for="bShots">İsabetli Şut Sayısı:</label>
+<input type="number" id="bShots" name="bShots">
+</div>
+<div>
+<label for="bShotAccuracy">Şut İsabeti:</label>
+<input type="number" id="bShotAccuracy" name="bShotAccuracy">
+</div>
+<div>
+<label for="bConversionRate">Gole Çevirme Oranı:</label>
+<input type="number" id="bConversionRate" name="bConversionRate">
+</div>
+</fieldset>
+<button type="submit">Hesapla</button>
+</form>
+<div id="result"></div>
+</div>
+<script>
+const matchForm = document.getElementById('matchForm');
+const resultDiv = document.getElementById('result');
+  matchForm.addEventListener('submit', function(event) {
+    event.preventDefault();
 
-			<label for="shot-accuracy-a">A Takımı Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabeti Oranı (%):</label>
-			<input type="number" id="shot-accuracy-a" name="shot-accuracy-a" required>
+    const aMatches = Number(document.getElementById('aMatches').value);
+    const aGoals = Number(document.getElementById('aGoals').value);
+    const aShots = Number(document.getElementById('aShots').value);
+    const aShotAccuracy = Number(document.getElementById('aShotAccuracy').value) / 100;
+    const aConversionRate = Number(document.getElementById('aConversionRate').value) / 100;
 
-			<label for="shot-conversion-a">A Takımı Bu Sezon Oynadığı Maçlardaki Şutları Gole Çevirme Oranı (%):</label>
-			<input type="number" id="shot-conversion-a" name="shot-conversion-a" required>
+    const bMatches = Number(document.getElementById('bMatches').value);
+    const bGoals = Number(document.getElementById('bGoals').value);
+    const bShots = Number(document.getElementById('bShots').value);
+    const bShotAccuracy = Number(document.getElementById('bShotAccuracy').value) / 100;
+    const bConversionRate = Number(document.getElementById('bConversionRate').value) / 100;
 
-			<label for="total-matches-b">B Takımı Bu Sezon Oynadığı Toplam Maç Sayısı:</label>
-			<input type="number" id="total-matches-b" name="total-matches-b" required>
+    const aExpectedGoals = (aShots * aShotAccuracy * aConversionRate) / aMatches;
+    const bExpectedGoals = (bShots * bShotAccuracy * bConversionRate) / bMatches;
+    const totalExpectedGoals = aExpectedGoals + bExpectedGoals;
+    const overProbability = 1 - Math.exp(-totalExpectedGoals);
 
-			<label for="total-goals-b">B Takımı Bu Sezon Attığı Toplam Gol Sayısı:</label>
-			<input type="number" id="total-goals-b" name="total-goals-b" required>
-
-			<label for="total-shots-on-target-b">B Takımı Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
-			<input type="number" id="total-shots-on-target-b" name="total-shots-on-target-b" required>
-
-			<label for="shot-accuracy-b">B Takımı Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabeti Oranı (%):</label>
-			<input type="number" id="shot-accuracy-b" name="shot-accuracy-b" required>
-
-			<label for="shot-conversion-b">B Takımı Bu Sezon Oynadığı Maçlardaki Şutları Gole Çevirme Oranı (%):</label>
-			<input type="number" id="shot-conversion-b" name="shot-conversion-b" required>
-
-			<button type="submit">Hesapla</button>
-		</fieldset>
-	</form>
-
-	<div id="over-probability"></div>
-
-	<script>
-		document.getElementById("input-form").addEventListener("submit", function(event) {
-			event.preventDefault();
-			calculateOverProbability();
-		});
-
-		function calculateOverProbability() {
-		
-// Get input values
-const totalMatchesA = parseInt(document.getElementById("total-matches-a").value);
-const totalGoalsA = parseInt(document.getElementById("total-goals-a").value);
-const totalShotsOnTargetA = parseInt(document.getElementById("total-shots-on-target-a").value);
-const shotAccuracyA = parseInt(document.getElementById("shot-accuracy-a").value);
-const shotConversionA = parseInt(document.getElementById("shot-conversion-a").value);
-const totalMatchesB = parseInt(document.getElementById("total-matches-b").value);
-const totalGoalsB = parseInt(document.getElementById("total-goals-b").value);
-const totalShotsOnTargetB = parseInt(document.getElementById("total-shots-on-target-b").value);
-const shotAccuracyB = parseInt(document.getElementById("shot-accuracy-b").value);
-const shotConversionB = parseInt(document.getElementById("shot-conversion-b").value);			// Calculate expected goals for each team
-			const expectedGoalsA = ((totalShotsOnTargetA * shotConversionA) / totalMatchesA);
-			const expectedGoalsB = ((totalShotsOnTargetB * shotConversionB) / totalMatchesB);
-
-			// Calculate the total number of expected goals
-			const expectedGoalsTotal = expectedGoalsA + expectedGoalsB;
-
-			// Calculate the probability of over 2.5 goals
-			const overProbability = ((expectedGoalsTotal - 2.5) / 0.25) * 100;
-
-			// Display the result
-			document.getElementById("over-probability").innerHTML = `Maçın Üst Bitme Olasılığı: ${overProbability.toFixed(2)}%`;
-		}
-	</script>
-</body>
+    resultDiv.innerHTML = `Maçın üst bitme ihtimali: ${(overProbability * 100).toFixed(2)}%`;
+  });
+</script>
+  </body>
 </html>
-
-
