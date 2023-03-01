@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Hücum Gücü Hesaplayıcı</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript">
+      function hesapla() {
+        let evSahibiToplamGolSayisi = parseInt(document.getElementById("evSahibiToplamGolSayisi").value);
+        let evSahibiOynadigiMacSayisi = parseInt(document.getElementById("evSahibiOynadigiMacSayisi").value);
+        let evSahibiIsabetliSutSayisi = parseInt(document.getElementById("evSahibiIsabetliSutSayisi").value);
+        let evSahibiToplamSutSayisi = parseInt(document.getElementById("evSahibiToplamSutSayisi").value);
+        let evSahibiOrtalamaGolSayisi = parseFloat(document.getElementById("evSahibiOrtalamaGolSayisi").value);
+        let ligOrtalamaGolSayisi = parseFloat(document.getElementById("ligOrtalamaGolSayisi").value);
+
+        let hucumGucu = (evSahibiToplamGolSayisi / evSahibiOynadigiMacSayisi) * (evSahibiIsabetliSutSayisi / evSahibiToplamSutSayisi) * (evSahibiOrtalamaGolSayisi / ligOrtalamaGolSayisi);
+
+        document.getElementById("hucumGucuSonucu").innerHTML = "Ev sahibi takımın hücum gücü: " + hucumGucu.toFixed(2);
+      }
+    </script>
+  </head>
+  <body>
+    <h1>Hücum Gücü Hesaplayıcı</h1>
+    <p>Ev sahibi takımın toplam gol sayısı:
+      <input type="number" id="evSahibiToplamGolSayisi" />
+    </p>
+    <p>Ev sahibi takımın oynadığı maç sayısı:
+      <input type="number" id="evSahibiOynadigiMacSayisi" />
+    </p>
+    <p>Ev sahibi takımın atılan isabetli şut sayısı:
+      <input type="number" id="evSahibiIsabetliSutSayisi" />
+    </p>
+    <p>Ev sahibi takımın atılan toplam şut sayısı:
+      <input type="number" id="evSahibiToplamSutSayisi" />
+    </p>
+    <p>Ev sahibi takımın ortalaması gol sayısı:
+      <input type="number" id="evSahibiOrtalamaGolSayisi" step="0.01" />
+    </p>
+    <p>Lig ortalaması gol sayısı:
+      <input type="number" id="ligOrtalamaGolSayisi" step="0.01" />
+</p>
+<button onclick="hesapla()">Hesapla</button>
+<p id="hucumGucuSonucu"></p>
+
+  </body>
+</html>
