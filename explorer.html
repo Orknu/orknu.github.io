@@ -1,32 +1,81 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>OKLink Explorer API Arama Örneği</title>
-  </head>
-  <body>
-    <h1>OKLink Explorer API Arama Örneği</h1>
-    <form>
-      <label>
-        TXID:
-        <input type="text" id="txid" name="txid">
-      </label>
-      <br>
-      <button type="button" onclick="search()">Ara</button>
-    </form>
-    <div id="result"></div>
-    <script>
-      function search() {
-        const txid = document.getElementById("txid").value;
-        const url = `https://www.oklink.com/api/v5/explorer/transaction/${txid}?apikey=9f701581-c962-486a-889b-7aa71d063817`;
+<head>
+	<meta charset="UTF-8">
+	<title>OKLink Explorer API Sorgulama</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
 
-        fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            const result = document.getElementById("result");
-            result.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-          })
-          .catch(error => console.error(error));
-      }
-    </script>
-  </body>
+		h1 {
+			margin-top: 0;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
+
+		table, th, td {
+			border: 1px solid black;
+			padding: 5px;
+		}
+
+		th {
+			background-color: #f2f2f2;
+			text-align: left;
+		}
+	</style>
+</head>
+<body>
+	<h1>OKLink Explorer API Sorgulama</h1>
+
+	<p>Adres: <input type="text" id="address" value="ADDRESS"></p>
+
+	<button onclick="getAddressInfo()">Sorgula</button>
+
+	<div id="result"></div>
+
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+		function getAddressInfo() {
+			// API anahtarınızı buraya girin
+			var api_key = "9f701581-c962-486a-889b-7aa71d063817";
+
+			// Sorgulanacak adresi alın
+			var address = $("#address").val();
+
+			// API URL'sini oluşturun
+			var api_url = "https://www.oklink.com/api/v1/addresses/" + address + "?api_key=" + api_key;
+
+			// API sorgusunu yapın
+			$.getJSON(api_url, function(data) {
+				// Yanıtı analiz edin
+				var balance = data.balance;
+				var tx_count = data.tx_count;
+				var unconfirmed_tx_count = data.unconfirmed_tx_count;
+				var txs = data.txs;
+
+				// Sonuçları HTML sayfasına yazdırın
+				var html = "<table>";
+				html += "<tr><td>Bakiye:</td><td>" + balance + "</td></tr>";
+				html += "<tr><td>İşlem Sayısı:</td><td>" + tx_count + "</td></tr>";
+				html += "<tr><td>Onay Bekleyen İşlem Sayısı:</td><td>" + unconfirmed_tx_count + "</td></tr>";
+				html += "</table>";
+
+				if (txs.length > 0) {
+					html += "<h2>İşlem Geçmişi:</h2>";
+					html += "<ul>";
+					for (var i = 0; i < txs.length; i++) {
+						var tx = txs[i];
+						html += "<li>" + tx.hash + " (" + tx.amount + " " + tx.asset_symbol + ")</li>";
+					}
+					html += "</ul>";
+				}
+
+				$("#result").html(html);
+			});
+		}
+	</script>
+</body>
 </html>
