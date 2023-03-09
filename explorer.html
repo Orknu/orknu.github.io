@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="UTF-8">
-	<title>OKLink Explorer API Sorgulama</title>
+	<title>Bitcoin İşlem Sorgulama</title>
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -28,50 +28,55 @@
 	</style>
 </head>
 <body>
-	<h1>OKLink Explorer API Sorgulama</h1>
+	<h1>Bitcoin İşlem Sorgulama</h1>
 
-	<p>Adres: <input type="text" id="address" value="ADDRESS"></p>
+	<p>İşlem Kimliği: <input type="text" id="txid" value="TXID"></p>
 
-	<button onclick="getAddressInfo()">Sorgula</button>
+	<button onclick="getTxInfo()">Sorgula</button>
 
 	<div id="result"></div>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<script>
-		function getAddressInfo() {
+		function getTxInfo() {
 			// API anahtarınızı buraya girin
-			var api_key = "9f701581-c962-486a-889b-7aa71d063817";
+			var api_key = "YOUR_API_KEY";
 
-			// Sorgulanacak adresi alın
-			var address = $("#address").val();
+			// Sorgulanacak txid'yi alın
+			var txid = $("#txid").val();
 
 			// API URL'sini oluşturun
-			var api_url = "https://www.oklink.com/api/v1/addresses/" + address + "?api_key=" + api_key;
+			var api_url = "https://api.blockchain.com/v3/explorer/rawtx/" + txid + "?apiCode=" + api_key;
 
 			// API sorgusunu yapın
 			$.getJSON(api_url, function(data) {
 				// Yanıtı analiz edin
-				var balance = data.balance;
-				var tx_count = data.tx_count;
-				var unconfirmed_tx_count = data.unconfirmed_tx_count;
-				var txs = data.txs;
+				var block_height = data.block_height;
+				var confirmations = data.confirmations;
+				var inputs = data.inputs;
+				var outputs = data.outputs;
 
 				// Sonuçları HTML sayfasına yazdırın
 				var html = "<table>";
-				html += "<tr><td>Bakiye:</td><td>" + balance + "</td></tr>";
-				html += "<tr><td>İşlem Sayısı:</td><td>" + tx_count + "</td></tr>";
-				html += "<tr><td>Onay Bekleyen İşlem Sayısı:</td><td>" + unconfirmed_tx_count + "</td></tr>";
+				html += "<tr><td>Blok Yüksekliği:</td><td>" + block_height + "</td></tr>";
+				html += "<tr><td>Onay Sayısı:</td><td>" + confirmations + "</td></tr>";
 				html += "</table>";
 
-				if (txs.length > 0) {
-					html += "<h2>İşlem Geçmişi:</h2>";
-					html += "<ul>";
-					for (var i = 0; i < txs.length; i++) {
-						var tx = txs[i];
-						html += "<li>" + tx.hash + " (" + tx.amount + " " + tx.asset_symbol + ")</li>";
-					}
-					html += "</ul>";
+				html += "<h2>Girdiler:</h2>";
+				html += "<ul>";
+				for (var i = 0; i < inputs.length; i++) {
+					var input = inputs[i];
+					html += "<li>" + input.prev_out.addr + " (" + input.prev_out.value + " Satoshi)</li>";
 				}
+				html += "</ul>";
+
+				html += "<h2>Çıktılar:</h2>";
+				html += "<ul>";
+				for (var i = 0; i < outputs.length; i++) {
+					var output = outputs[i];
+					html += "<li>" + output.addr + " (" + output.value + " Satoshi)</li>";
+				}
+				html += "</ul>";
 
 				$("#result").html(html);
 			});
