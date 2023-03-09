@@ -1,38 +1,32 @@
 <!DOCTYPE html>
 <html>
-<head>
-	<title>Oklink Explorer API</title>
-</head>
-<body>
-	<h1>Oklink Explorer API</h1>
+  <head>
+    <title>OKLink Explorer API Arama Örneği</title>
+  </head>
+  <body>
+    <h1>OKLink Explorer API Arama Örneği</h1>
+    <form>
+      <label>
+        TXID:
+        <input type="text" id="txid" name="txid">
+      </label>
+      <br>
+      <button type="button" onclick="search()">Ara</button>
+    </form>
+    <div id="result"></div>
+    <script>
+      function search() {
+        const txid = document.getElementById("txid").value;
+        const url = `https://www.oklink.com/api/v5/explorer/transaction/${txid}?apikey=9f701581-c962-486a-889b-7aa71d063817`;
 
-	<label for="txid">Txid:</label>
-	<input type="text" id="txid">
-	<button onclick="searchTxid()">Ara</button>
-
-	<div id="result"></div>
-
-	<script>
-		function searchTxid() {
-			// Girilen txid'yi al
-			var txid = document.getElementById("txid").value;
-
-			// Oklink Explorer API'den veri almak için AJAX çağrısı yap
-			var xhttp = new XMLHttpRequest();
-			xhttp.onreadystatechange = function() {
-				if (this.readyState == 4 && this.status == 200) {
-					// API'den alınan verileri ayrıştır
-					var data = JSON.parse(this.responseText);
-
-					// Sonuçları göster
-					document.getElementById("result").innerHTML = "<p>" + JSON.stringify(data) + "</p>";
-				}
-			};
-			xhttp.open("GET", "https://www.oklink.com/api/v5/explorer/transaction?chainShortName=btc&txid=" + txid, true);
-			xhttp.setRequestHeader("Content-type", "application/json");
-			xhttp.setRequestHeader("Authorization", "Bearer 9f701581-c962-486a-889b-7aa71d063817");
-			xhttp.send();
-		}
-	</script>
-</body>
+        fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const result = document.getElementById("result");
+            result.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+          })
+          .catch(error => console.error(error));
+      }
+    </script>
+  </body>
 </html>
