@@ -1,57 +1,46 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>Arama Kutusu Örneği</title>
-    <style>
-        /* Arama kutusunu stilize edin */
-        #search-box {
-            width: 300px;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-        }
-    </style>
-</head>
-<body>
-    <h1>Arama Kutusu Örneği</h1>
-    <input type="text" id="search-box" placeholder="Arama yapın...">
+  <head>
+    <title>Oklink API Arama</title>
+  </head>
+  <body>
+    <h1>Oklink API Arama</h1>
+    <input type="text" id="search-input">
+    <button type="button" id="search-button">Ara</button>
     <ul id="search-results"></ul>
 
-    <script src="https://static.oklink.com/v2/oklink-sdk.min.js"></script>
+    <script src="https://cdn.oklink.com/sdk/oklink-sdk.js"></script>
     <script>
-        // API anahtarlarınızı yükleyin
-        Oklink.setConfig({
-            apiKey: '9f701581-c962-486a-889b-7aa71d063817',
-        });
+      // API anahtarlarınızı burada ayarlayın
+      Oklink.setConfig({
+        apiKey: '9f701581-c962-486a-889b-7aa71d063817'
+      });
 
-        // Arama kutusundaki metni dinleyin ve sonuçları gösterin
-        const searchBox = document.getElementById('search-box');
-        const searchResults = document.getElementById('search-results');
-        
-        searchBox.addEventListener('input', function() {
-            // Arama sorgusu oluşturun
-            const query = searchBox.value.trim();
-            if (query.length === 0) {
-                searchResults.innerHTML = '';
-                return;
-            }
+      // Arama butonu tıklama olayını dinleyin
+      var searchButton = document.getElementById('search-button');
+      searchButton.addEventListener('click', function() {
+        var searchInput = document.getElementById('search-input').value;
 
-            // Arama sonuçlarını alın
-            OklinkExplorer.get(`/v1/btc/mainnet/search/${query}`, function(err, res) {
-                if (err) {
-                    console.error(err);
-                } else {
-                    const results = res.results;
-                    let html = '';
-                    for (let i = 0; i < results.length; i++) {
-                        const result = results[i];
-                        html += `<li><a href="${result.url}">${result.title}</a></li>`;
-                    }
-                    searchResults.innerHTML = html;
-                }
-            });
+        // API isteğini yapın
+        Oklink.ExplorerAPI.search({
+          keyword: searchInput,
+          limit: 10
+        }).then(function(response) {
+          var searchResults = document.getElementById('search-results');
+
+          // Sonuçları temizle
+          searchResults.innerHTML = '';
+
+          // Her sonuç için bir list öğesi oluşturun
+          for (var i = 0; i < response.data.length; i++) {
+            var listItem = document.createElement('li');
+            listItem.innerHTML = response.data[i].name;
+            searchResults.appendChild(listItem);
+          }
+        }).catch(function(error) {
+          console.log(error);
         });
+      });
     </script>
-</body>
+  </body>
 </html>
