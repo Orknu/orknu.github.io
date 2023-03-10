@@ -1,51 +1,130 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Maçın Üst Bitme İhtimali Hesaplayıcısı</title>
-	<link rel="stylesheet" type="text/css" href="https://orkun.org/v2.css">
+	<title>Maçın Üst Bitme İhtimali Hesaplama Formu</title>
+	<style type="text/css">
+		label {
+			display: block;
+			margin-top: 10px;
+		}
+		input {
+			width: 100px;
+		}
+		button {
+			margin-top: 20px;
+			padding: 10px 20px;
+			font-size: 16px;
+			background-color: #4CAF50;
+			color: white;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+		button:hover {
+			background-color: #3e8e41;
+		}
+		#result {
+			margin-top: 20px;
+			font-size: 18px;
+		}
+	</style>
 </head>
 <body>
-	<div class="container">
-		<h1>Maçın Üst Bitme İhtimali Hesaplayıcısı</h1>
-		<form id="calc-form">
-			<label for="total-matches-a">A Takımı Oynanan Maç Sayısı:</label>
-			<input type="number" id="total-matches-a" placeholder="Toplam Maç Sayısı">
+	<h1>Maçın Üst Bitme İhtimali Hesaplama Formu</h1>
+	<form id="match-form">
+		<label>A Takımının Bu Sezon Oynadığı Toplam Maç Sayısı:</label>
+		<input type="number" id="total-matches-a" required>
 
-			<label for="total-goals-a">A Takımı Atılan Toplam Gol Sayısı:</label>
-			<input type="number" id="total-goals-a" placeholder="Atılan Gol Sayısı">
+		<label>B Takımının Bu Sezon Oynadığı Toplam Maç Sayısı:</label>
+		<input type="number" id="total-matches-b" required>
 
-			<label for="total-shots-on-target-a">A Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
-			<input type="number" id="total-shots-on-target-a" placeholder="İsabetli Şut Sayısı">
+		<label>A Takımı Bu Sezon Attığı Toplam Gol Sayısı:</label>
+		<input type="number" id="total-goals-a" required>
 
-			<label for="shot-accuracy-a">A Takımının Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabet Oranı (Yüzde):</label>
-			<input type="number" id="shot-accuracy-a" placeholder="İsabet Oranı">
+		<label>B Takımı Bu Sezon Attığı Toplam Gol Sayısı:</label>
+		<input type="number" id="total-goals-b" required>
 
-			<label for="conversion-rate-a">A Takımının Bu Sezon Oynadığı Maçlardaki Şutlarını Gole Çevirme Oranı (Yüzde):</label>
-			<input type="number" id="conversion-rate-a" placeholder="Gole Çevirme Oranı">
+		<label>A Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
+		<input type="number" id="total-shots-on-target-a" required>
 
-            <br/>
+		<label>B Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
+		<input type="number" id="total-shots-on-target-b" required>
 
-			<label for="total-matches-b">B Takımı Oynanan Maç Sayısı:</label>
-			<input type="number" id="total-matches-b" placeholder="Toplam Maç Sayısı">
+		<label>A Takımının Bu Sezon Oynadığı Maçlardaki Şutların İsabet Oranı:</label>
+		<input type="number" id="shot-accuracy-a" step="0.01" min="0" max="1" required>
 
-			<label for="total-goals-b">B Takımı Atılan Toplam Gol Sayısı:</label>
-			<input type="number" id="total-goals-b" placeholder="Atılan Gol Sayısı">
+		<label>B Takımının Bu Sezon Oynadığı Maçlardaki Şutların İsabet Oranı:</label>
+		<input type="number" id="shot-accuracy-b" step="0.01" min="0" max="1" required>
 
-			<label for="total-shots-on-target-b">B Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
-			<input type="number" id="total-shots-on-target-b" placeholder="İsabetli Şut Sayısı">
+		<label>A Takımının Bu Sezon Oynadığı Maçlardaki Şutları Gole Çevirme Oranı:</label>
+		<input type="number" id="conversion-rate-a" step="0.01" min="0" max="1" required>
 
-			<label for="shot-accuracy-b">B Takımının Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabet Oranı (Yüzde):</label>
-			<input type="number" id="shot-accuracy-b" placeholder="İsabet Oranı">
+		<label>B Takımının Bu Sezon Oynadığı Maçlardaki Şutları Gole Çevirme Oranı:</label>
+		<input type="number" id="conversion-rate-b" step="0.01" min="0" max="1" required>
 
-			<label for="conversion-rate-b">B Takımının Bu Sezon Oynadığı Maçlardaki Şutlarını Gole Çevirme Oranı (Yüzde):</label>
-			<input type="number" id="conversion-rate-b" placeholder="Gole Çevirme Oranı">
-			<br/>
+		<label>A ve B Takımlarının Aralarında Oynadığı Son 5 Maçta Atılan Gol Sayısı:</label>
+		<input type="number" id="last-5-goals" required>
 
-			<button type="button" onclick="calculate()">Hesapla</button>
-		</form>
-		<div id="result"></div>
-	</div>
+		<label>A Takımının Evde Attığı Gol Sayısı:</label>
+		<input type="number" id="home-goals-a" required>
 
-	<script src="https://orkun.org/v2.js"></script>
-</body>
+		<label>B Takımının Deplasmanda Attığı Gol Sayısı:</label>
+		<input type="number" id="away-goals-b" required>
+
+		<label>Maç Evde mi Yoksa Deplasmanda mı Oynanıyor:</label>
+		<select id="match-location" required>
+			<option value="home">Evde</option>
+			<option value="away">Deplasmanda</option>
+		</select>
+
+		<label>Hakemin Görev Aldığı Maçlarda Atılan Gol Sayısı:</label>
+<input type="number" id="referee-goals" required><button type="submit">Hesapla</button>
+</form>
+
+<div id="result"></div>
+
+<script type="text/javascript">
+	document.getElementById("match-form").addEventListener("submit", function(event) {
+		event.preventDefault();
+
+		var totalMatchesA = parseFloat(document.getElementById("total-matches-a").value);
+		var totalMatchesB = parseFloat(document.getElementById("total-matches-b").value);
+		var totalGoalsA = parseFloat(document.getElementById("total-goals-a").value);
+		var totalGoalsB = parseFloat(document.getElementById("total-goals-b").value);
+		var totalShotsOnTargetA = parseFloat(document.getElementById("total-shots-on-target-a").value);
+		var totalShotsOnTargetB = parseFloat(document.getElementById("total-shots-on-target-b").value);
+		var shotAccuracyA = parseFloat(document.getElementById("shot-accuracy-a").value);
+		var shotAccuracyB = parseFloat(document.getElementById("shot-accuracy-b").value);
+		var conversionRateA = parseFloat(document.getElementById("conversion-rate-a").value);
+		var conversionRateB = parseFloat(document.getElementById("conversion-rate-b").value);
+		var last5Goals = parseFloat(document.getElementById("last-5-goals").value);
+		var homeGoalsA = parseFloat(document.getElementById("home-goals-a").value);
+		var awayGoalsB = parseFloat(document.getElementById("away-goals-b").value);
+		var matchLocation = document.getElementById("match-location").value;
+		var refereeGoals = parseFloat(document.getElementById("referee-goals").value);
+
+		var avgGoalsA = totalGoalsA / totalMatchesA;
+		var avgGoalsB = totalGoalsB / totalMatchesB;
+		var avgShotsOnTargetA = totalShotsOnTargetA / totalMatchesA;
+		var avgShotsOnTargetB = totalShotsOnTargetB / totalMatchesB;
+		var shotConversionRateA = conversionRateA / 100;
+		var shotConversionRateB = conversionRateB / 100;
+
+		var probability = (avgGoalsA * shotAccuracyA * shotConversionRateA + avgGoalsB * shotAccuracyB * shotConversionRateB) / (avgShotsOnTargetA + avgShotsOnTargetB);
+
+		if (matchLocation === "home") {
+			probability += (homeGoalsA / totalMatchesA);
+		} else if (matchLocation === "away") {
+			probability += (awayGoalsB / totalMatchesB);
+		}
+
+		probability += (last5Goals / 5 + refereeGoals) / 10;
+
+		if (probability > 1) {
+			probability = 1;
+		}
+
+		document.getElementById("result").innerHTML = "<p>Maçın üst bitme ihtimali: " + (probability * 100).toFixed(2) + "%</p>";
+	});
+</script></body>
 </html>
