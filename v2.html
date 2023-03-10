@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Maçın Üst Bitme İhtimali Hesaplayıcısı</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Maçın Üst Bitme İhtimali Hesaplayıcısı</h1>
+		<form id="calc-form">
+			<label for="total-matches-a">A Takımı Oynanan Maç Sayısı:</label>
+			<input type="number" id="total-matches-a" placeholder="Toplam Maç Sayısı">
+
+			<label for="total-goals-a">A Takımı Atılan Toplam Gol Sayısı:</label>
+			<input type="number" id="total-goals-a" placeholder="Atılan Gol Sayısı">
+
+			<label for="total-shots-on-target-a">A Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
+			<input type="number" id="total-shots-on-target-a" placeholder="İsabetli Şut Sayısı">
+
+			<label for="shot-accuracy-a">A Takımının Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabet Oranı (Yüzde):</label>
+			<input type="number" id="shot-accuracy-a" placeholder="İsabet Oranı">
+
+			<label for="conversion-rate-a">A Takımının Bu Sezon Oynadığı Maçlardaki Şutlarını Gole Çevirme Oranı (Yüzde):</label>
+			<input type="number" id="conversion-rate-a" placeholder="Gole Çevirme Oranı">
+
+            <br/>
+
+			<label for="total-matches-b">B Takımı Oynanan Maç Sayısı:</label>
+			<input type="number" id="total-matches-b" placeholder="Toplam Maç Sayısı">
+
+			<label for="total-goals-b">B Takımı Atılan Toplam Gol Sayısı:</label>
+			<input type="number" id="total-goals-b" placeholder="Atılan Gol Sayısı">
+
+			<label for="total-shots-on-target-b">B Takımının Bu Sezon Oynadığı Maçlardaki Toplam İsabetli Şut Sayısı:</label>
+			<input type="number" id="total-shots-on-target-b" placeholder="İsabetli Şut Sayısı">
+
+			<label for="shot-accuracy-b">B Takımının Bu Sezon Oynadığı Maçlardaki Atılan Şutların İsabet Oranı (Yüzde):</label>
+			<input type="number" id="shot-accuracy-b" placeholder="İsabet Oranı">
+
+			<label for="conversion-rate-b">B Takımının Bu Sezon Oynadığı Maçlardaki Şutlarını Gole Çevirme Oranı (Yüzde):</label>
+			<input type="number" id="conversion-rate-b" placeholder="Gole Çevirme Oranı">
+			<br/>
+
+			<button type="button" onclick="calculate()">Hesapla</button>
+		</form>
+		<div id="result"></div>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
