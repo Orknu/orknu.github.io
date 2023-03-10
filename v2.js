@@ -26,6 +26,6 @@ if (probability > 1) {
 }
 
 // Sonucu HTML'de gösterin
-document.getElementById('result').innerHTML = '<p>Maçın üst bitme ihtimali: ' + (probability * 100).toFixed(2) + '%</p>';
+document.getElementById('result').innerHTML = '<p>Maçın üst bitme ihtimali: ' + (probability * 100).toFixed(4) + '%</p>';
 
 }
