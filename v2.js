@@ -20,12 +20,6 @@ function calculate() {
 	var shotConversionRateB = conversionRateB / 100;
 	var probability = (avgGoalsA * shotAccuracyA * shotConversionRateA + avgGoalsB * shotAccuracyB * shotConversionRateB) / (avgShotsOnTargetA + avgShotsOnTargetB);
 
-// Eğer ihtimal 1'den büyükse, 1'e eşitle
-if (probability > 1) {
-  probability = 1;
-}
-
-// Sonucu HTML'de gösterin
-document.getElementById('result').innerHTML = '<p>Maçın üst bitme ihtimali: ' + (probability * 100).toFixed(4) + '%</p>';
-
+	// Sonucu HTML'de gösterin
+	document.getElementById('result').innerHTML = '<p>Maçın üst bitme ihtimali: ' + (probability * 100).toFixed(2) + '%</p>';
 }
